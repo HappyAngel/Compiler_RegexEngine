@@ -1,11 +1,16 @@
+#pragma once
+
 #include <stdio.h>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <stack>
 using namespace std;
 
 class IOperand
 {
+protected:
+	char _c;
 public:
 
 	virtual char GetValue() = 0;
@@ -18,9 +23,6 @@ public:
 ///
 class RegexOperand : public IOperand
 {
-private:
-	char _c;
-
 public:
 	RegexOperand()
 	{
@@ -222,6 +224,7 @@ private:
 	}
 
 public:
+	///error returns NULL, otherwise the regex object
 	static RegexOperator* GetRegexObject(char c)
 	{
 		RegexOperator* returnObj = NULL;
@@ -257,5 +260,40 @@ public:
 
 class RegexExpression
 {
+private:
+	// raw regex expression to parse
+	string _exp;
+	// exp after preprocessor
+	string _normalizedExp;
 
+	///preproess to parse for regex string
+	// 1 add "&" for AND regex operation
+	// 2 add "#" for Regex End operation
+	void preprocess();
+
+	bool evalByOperatorType(RegexOperator* pRegOperator, stack<RegexOperand*>& operands);
+
+	// eval str value
+	// return true on success and set outputValue
+	bool eval();
+
+public:
+	RegexExpression(string exp)
+	{
+		_exp = exp;
+
+		preprocess();
+	}
+
+	// parse exp and get correspond DFA
+	bool ParseUsingNFA(string strToParse)
+	{
+		return eval();
+	}
+
+	// parse exp using DFA
+	bool ParseUsingDFA(string strToParse)
+	{
+
+	}
 };

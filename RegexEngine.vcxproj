@@ -65,10 +65,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RegexBase.cpp" />
+    <ClCompile Include="RegexExpression.cpp" />
+    <ClCompile Include="RegexExpressionUnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="interfaces.h" />
+    <ClInclude Include="RegexExpressionUnitTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
