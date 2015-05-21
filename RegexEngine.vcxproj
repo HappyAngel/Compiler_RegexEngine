@@ -65,11 +65,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NFA.cpp" />
     <ClCompile Include="RegexExpression.cpp" />
     <ClCompile Include="RegexExpressionUnitTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="interfaces.h" />
+    <ClInclude Include="NFA.h" />
     <ClInclude Include="RegexExpressionUnitTest.h" />
   </ItemGroup>
   <ItemGroup>

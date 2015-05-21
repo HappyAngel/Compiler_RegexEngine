@@ -24,13 +24,19 @@
     <ClCompile Include="RegexExpressionUnitTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NFA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="interfaces.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="RegexExpressionUnitTest.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NFA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

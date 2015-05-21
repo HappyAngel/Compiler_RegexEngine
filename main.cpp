@@ -12,7 +12,6 @@ int main()
 {
 	RegexExpressionUnitTest::RegexParserUnitTest();	
 
-
 	//cout<<"Convert string to Regex Parse tree done with result: "<< (bSuccess1 ? "True" : "False") <<endl;
 	int a;
 	cin>>a;

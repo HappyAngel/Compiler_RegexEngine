@@ -36,6 +36,10 @@ void RegexExpressionUnitTest::RegexParserUnitTest()
 	bSuccess1 = regexExp103.ParseUsingNFA("test");
 	assert(bSuccess1);
 
+	RegexExpression regexExp104("(a|cb)e*f"); 
+	bSuccess1 = regexExp104.ParseUsingNFA("test");
+	assert(bSuccess1);
+
 	// negative cases
 	RegexExpression regexExp4("|abc*b"); 
 	bSuccess1 = regexExp4.ParseUsingNFA("test");

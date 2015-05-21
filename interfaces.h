@@ -26,7 +26,7 @@ class RegexOperand : public IOperand
 public:
 	RegexOperand()
 	{
-		_c = '#';
+		_c = '_';
 	}
 
 	RegexOperand (char c)
@@ -285,7 +285,7 @@ public:
 		preprocess();
 	}
 
-	// parse exp and get correspond DFA
+	// parse exp to get NFA, and simulate to get results
 	bool ParseUsingNFA(string strToParse)
 	{
 		return eval();
@@ -296,4 +296,23 @@ public:
 	{
 
 	}
+};
+
+// base class for finite automa machine
+class FA
+{
+protected:
+	typedef unsigned int State;
+
+	State _startState;
+	vector<State> _endState;
+	vector<State> _allState;
+	vector<vector<char>> _transitionTable;
+private:
+	virtual bool isSupportSymbol (char c) = 0;
+
+	virtual bool Transite (State s, char c) = 0;
+
+public:
+	FA(RegexExpression re);
 };
