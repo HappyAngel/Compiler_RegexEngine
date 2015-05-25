@@ -41,3 +41,15 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.suo
+*.sdf
+*.opensdf
+*.obj
+Debug/RegexEngine.Build.CppClean.log
+*.exe
+*.ilk
+Debug/RegexEngine.log
+*.pdb
+Debug/RegexEngine.tlog/cl.command.1.tlog
+*.tlog
+*.idb

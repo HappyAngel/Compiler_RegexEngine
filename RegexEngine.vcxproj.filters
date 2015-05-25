@@ -27,13 +27,13 @@
     <ClCompile Include="NFA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RegexExpressionUnitTest.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NFA.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="interfaces.h">
       <Filter>Header Files</Filter>
