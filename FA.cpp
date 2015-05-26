@@ -36,7 +36,6 @@ bool FA::evalByOperatorType(RegexOperator* pRegOperator, stack<RegexOperand*>& o
 		pOp1 = operands.top();
 		operands.pop();
 		pVec.push_back(pOp1);
-		performSTAROperator(pOp1->GetValue());
 		operands.push((RegexOperand*)pRegOperator->eval(this, pVec));
 		delete pOp1;
 		break;

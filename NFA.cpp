@@ -53,25 +53,25 @@ bool NFA::createTransite(State startState, char c, State endState)
 	return true;
 }
 
-NFA::SubNFAGraphInfo NFA::performANDOperator(SubNFAGraphInfo a, SubNFAGraphInfo b)
+NFA::SubNFAGraphInfo NFA::performANDOperator(SubNFAGraphInfo dest, SubNFAGraphInfo src)
 {
-	createTransite(a.endState, kNULLTransite, b.startState);
+	createTransite(src.endState, kNULLTransite, dest.startState);
 
 	SubNFAGraphInfo info;
-	info.startState = a.startState;
-	info.endState = b.endState;
+	info.startState = src.startState;
+	info.endState = dest.endState;
 	return info;
 }
 
-NFA::SubNFAGraphInfo NFA::performOROperator(SubNFAGraphInfo a, SubNFAGraphInfo b)
+NFA::SubNFAGraphInfo NFA::performOROperator(SubNFAGraphInfo dest, SubNFAGraphInfo src)
 {
 	State startState = createState();
-	createTransite(startState, kNULLTransite, a.startState);
-	createTransite(startState, kNULLTransite, b.startState);
+	createTransite(startState, kNULLTransite, dest.startState);
+	createTransite(startState, kNULLTransite, src.startState);
 
 	State endState = createState();
-	createTransite(a.endState, kNULLTransite, endState);
-	createTransite(b.endState, kNULLTransite, endState);
+	createTransite(src.endState, kNULLTransite, endState);
+	createTransite(dest.endState, kNULLTransite, endState);
 
 	SubNFAGraphInfo info;
 	info.startState = startState;
