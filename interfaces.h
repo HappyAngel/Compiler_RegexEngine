@@ -297,6 +297,10 @@ private:
 
 	virtual SubNFAGraphInfo createSingleCharState(char a);
 
+	vector<State> findALLNULLPathStatesFromStates(vector<State> states);
+
+	bool containsEndStates(vector<State> states);
+
 	const char kNULLTransite = '~';
 
 public:

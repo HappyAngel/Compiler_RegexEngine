@@ -146,7 +146,7 @@ bool FA::eval()
 
 FA::State FA::createState()
 {
-	State newState = _allState.size() + 1;
+	State newState = _allState.size();
 	_allState.push_back(newState);
 	return newState;
 }

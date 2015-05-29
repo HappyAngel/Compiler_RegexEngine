@@ -7,7 +7,82 @@ bool NFA::IsAccept(string strToParse)
 		return false;
 	}
 
-	return true;
+	vector<State> currentStates;
+	currentStates.push_back(_startState);
+	vector<State> tmpStates;
+	// use simulate NFA algorithms to get results
+	for (unsigned int i = 0; i < strToParse.length(); i++)
+	{
+		currentStates = findALLNULLPathStatesFromStates(currentStates);
+
+		for (unsigned int j = 0; j < currentStates.size(); j++)
+		{
+			if (_transitionTable.size() > currentStates[j] && _transitionTable[currentStates[j]].find(strToParse[i]) != _transitionTable[currentStates[j]].end())
+			{
+				tmpStates.insert(tmpStates.end(), _transitionTable[currentStates[j]][strToParse[i]].begin(), _transitionTable[currentStates[j]][strToParse[i]].end());
+			}
+		}
+
+		if (tmpStates.empty())
+		{
+			return false;
+		}
+		else
+		{
+			currentStates = tmpStates;
+			tmpStates.clear();
+		}
+	}
+
+	currentStates = findALLNULLPathStatesFromStates(currentStates);
+
+	if (containsEndStates(currentStates))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool NFA::containsEndStates(vector<State> states)
+{
+	for (unsigned int i = 0; i < states.size(); i++)
+	{
+		for (unsigned int j = 0; j < _endState.size(); j++)
+		{
+			if (states[i] == _endState[j])
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+vector<NFA::State> NFA::findALLNULLPathStatesFromStates(vector<State> states)
+{
+	vector<State> results = states;
+
+	unsigned int headIndex = 0;
+	unsigned int tailIndex = results.size();
+
+	while (headIndex < tailIndex)
+	{
+		if (_transitionTable.size() > results[headIndex] &&
+			_transitionTable[results[headIndex]].find(kNULLTransite) != _transitionTable[results[headIndex]].end())
+		{
+			// to do: may add the same states.
+			results.insert(results.end(), _transitionTable[results[headIndex]][kNULLTransite].begin(), _transitionTable[results[headIndex]][kNULLTransite].end());
+		}
+
+		headIndex++;
+		tailIndex = results.size();
+	}
+
+	return results;
 }
 
 bool NFA::BuildNFA()
@@ -33,21 +108,21 @@ bool NFA::isSupportSymbol(char c)
 
 bool NFA::createTransite(State startState, char c, State endState)
 {
-	while (startState > _transitionTable.size())
+	while (startState >= _transitionTable.size())
 	{
 		map<char, vector<State>> tmpMap;
 		_transitionTable.push_back(tmpMap);
 	}
 
-	if (_transitionTable[startState - 1].find(c) != _transitionTable[startState - 1].end())
+	if (_transitionTable[startState].find(c) != _transitionTable[startState].end())
 	{
-		_transitionTable[startState - 1][c].push_back(endState);
+		_transitionTable[startState][c].push_back(endState);
 	}
 	else
 	{
 		vector<State> endStates;
 		endStates.push_back(endState);
-		_transitionTable[startState - 1].insert(std::pair<char, vector<State>>(c, endStates));
+		_transitionTable[startState].insert(std::pair<char, vector<State>>(c, endStates));
 	}
 
 	return true;
