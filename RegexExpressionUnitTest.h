@@ -4,7 +4,9 @@ class RegexExpressionUnitTest
 {
 public:
 
-	// tests for Step 1: Parse Regex Expression
-	static void RegexParserUnitTest();
+	// tests for Parse Regex Expression using NFA
+	static void RegexParserNFAUnitTest();
 
+	//tests for Parser Regex Expression using DFA
+	static void RegexParserDFAUnitTest();
 };

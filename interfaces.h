@@ -278,6 +278,8 @@ public:
 	}
 
 	virtual bool IsAccept(string strToParse) = 0;
+
+	virtual vector<string> extractMatchStrings(string strToExtract) = 0;
 };
 
 class NFA : public FA
@@ -303,6 +305,8 @@ private:
 
 	const char kNULLTransite = '~';
 
+	int simulateNFA(string strToParse);
+
 public:
 	NFA(string regexStr) : FA(regexStr)
 	{
@@ -312,6 +316,8 @@ public:
 	bool BuildNFA();
 
 	virtual bool IsAccept(string strToParse);
+
+	virtual vector<string> extractMatchStrings(string strToExtract);
 };
 
 class RegexExpression
@@ -355,5 +361,21 @@ public:
 	bool ParseUsingDFA(string strToParse)
 	{
 
+	}
+	
+	// extract strings using NFA
+	vector<string> ExtractUsingNFA(string strToExtract)
+	{
+		vector<string> result;
+
+		NFA nfa(_exp);
+
+		if (!nfa.BuildNFA())
+		{
+			return result;
+		}
+
+		result = nfa.extractMatchStrings(strToExtract);
+		return result;
 	}
 };

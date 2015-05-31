@@ -1,7 +1,8 @@
 #include "RegexExpressionUnitTest.h"
 #include <assert.h>
+#include <string>
 
-void RegexExpressionUnitTest::RegexParserUnitTest()
+void RegexExpressionUnitTest::RegexParserNFAUnitTest()
 {
 	// positive cases
 	RegexExpression regexExp("a(b|c)*b"); 
@@ -82,5 +83,24 @@ void RegexExpressionUnitTest::RegexParserUnitTest()
 	bSuccess1 = regexExp9.ParseUsingNFA("test");
 	assert(!bSuccess1);
 
-	cout<<"ALL RegexParser Unit Test Passed!"<<endl;
+	// extract string test
+	RegexExpression regexExp300("a*b*");
+	vector<string> results = regexExp300.ExtractUsingNFA("");
+	assert(results.size() == 0);
+
+	RegexExpression regexExp301("a*b*");
+	results = regexExp301.ExtractUsingNFA("dddanljabfdsfa");
+	assert(results.size() == 3);
+
+	RegexExpression regexExp302("a*");
+	results = regexExp302.ExtractUsingNFA("ba");
+	assert(results.size() == 1);
+
+	cout<<"ALL RegexParser NFA Unit Test Passed!"<<endl;
+}
+
+void RegexExpressionUnitTest::RegexParserDFAUnitTest()
+{
+
+
 }

@@ -2,9 +2,25 @@
 
 bool NFA::IsAccept(string strToParse)
 {
-	if (_transitionTable.empty())
+	int index = simulateNFA(strToParse);
+	
+	if (index < 0 || (!strToParse.empty() && index == 0))
 	{
 		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+// parse a string {strToParse} and return the accept string [0, index) in the string
+// if no accept occues, return -1
+int NFA::simulateNFA(string strToParse)
+{
+	if (_transitionTable.empty())
+	{
+		return -1;
 	}
 
 	vector<State> currentStates;
@@ -25,7 +41,7 @@ bool NFA::IsAccept(string strToParse)
 
 		if (tmpStates.empty())
 		{
-			return false;
+			return i;
 		}
 		else
 		{
@@ -38,11 +54,11 @@ bool NFA::IsAccept(string strToParse)
 
 	if (containsEndStates(currentStates))
 	{
-		return true;
+		return strToParse.length();
 	}
 	else
 	{
-		return false;
+		return -1;
 	}
 }
 
@@ -221,4 +237,36 @@ void NFA::preprocess()
 	processedStr += '#';
 
 	_normalizedExp = processedStr;
+}
+
+vector<string> NFA::extractMatchStrings(string strToExtract)
+{
+	vector<string> result;
+
+	int index = simulateNFA(strToExtract);
+	int prevIndex = 0;
+
+	while (index >= 0)
+	{
+		if (index == 0)
+		{
+			index = prevIndex + 1;
+			prevIndex = index;
+		}
+		else
+		{
+			result.push_back(strToExtract.substr(prevIndex, index));
+			index = prevIndex + index;
+			prevIndex = index;
+		}
+
+		if (index >= strToExtract.size())
+		{
+			break;
+		}
+
+		index = simulateNFA(strToExtract.substr(index));
+	}
+
+	return result;
 }
