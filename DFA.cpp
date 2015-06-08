@@ -38,6 +38,11 @@ bool DFA::buildDFAFromNFA()
 
 			for (map<char, vector<State>>::iterator itr = _pNFA->_transitionTable[states[i]].begin(); itr != _pNFA->_transitionTable[states[i]].end(); itr++)
 			{
+				if (itr->first == kNULLTransite)
+				{
+					continue;
+				}
+
 				if (possibleNFAPathMap.find(itr->first) != possibleNFAPathMap.end())
 				{
 					for (unsigned int j = 0; j < itr->second.size(); j++)
@@ -86,6 +91,29 @@ bool DFA::buildDFAFromNFA()
 		}
 	}
 
+	// set end states
+	for (vector<vector<State>>::iterator dfaNFAMapItr = _dfaNFAStatesMap.begin(); dfaNFAMapItr != _dfaNFAStatesMap.end(); dfaNFAMapItr++)
+	{
+		bool isInEndStates = false;
+
+		for (vector<State>::iterator subItr = dfaNFAMapItr->begin(); subItr != dfaNFAMapItr->end() && !isInEndStates; subItr++)
+		{
+			for (vector<State>::iterator nfaEndStatesItr = _pNFA->_endState.begin(); nfaEndStatesItr != _pNFA->_endState.end(); nfaEndStatesItr++)
+			{
+				if (*subItr == *nfaEndStatesItr)
+				{
+					isInEndStates = true;
+					break;
+				}
+			}
+		}
+
+		if (isInEndStates)
+		{
+			_endState.push_back(dfaNFAMapItr - _dfaNFAStatesMap.begin());
+		}
+	}
+
 	return true;
 }
 
@@ -118,4 +146,17 @@ int DFA::getDFAStateByNFAStates(vector<State> states)
 	}
 
 	return -1;
+}
+
+bool DFA::isAccept(string strToParse)
+{
+	if (_transitionTable.empty())
+	{
+		return false;
+	}
+
+
+
+
+	return true;
 }

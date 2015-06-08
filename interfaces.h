@@ -337,10 +337,7 @@ public:
 
 	bool buildDFAFromNFA();
 
-	virtual bool isAccept(string strToParse)
-	{
-		return true;
-	}
+	virtual bool isAccept(string strToParse);
 
 	virtual vector<string> extractMatchStrings(string strToExtract)
 	{
@@ -398,6 +395,11 @@ public:
 		DFA dfa(&nfa);
 
 		if (!dfa.buildDFAFromNFA())
+		{
+			return false;
+		}
+
+		if (!dfa.isAccept(strToParse))
 		{
 			return false;
 		}
