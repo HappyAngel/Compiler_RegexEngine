@@ -65,7 +65,7 @@
           <NewMemberFileName>interfaces.h</NewMemberFileName>
         </TypeIdentifier>
       </Class>
-      <Struct Name="FA::SubNFAGraphInfo" Collapsed="true">
+      <Struct Name="FA::SubGraphInfo" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>interfaces.h</NewMemberFileName>
         </TypeIdentifier>

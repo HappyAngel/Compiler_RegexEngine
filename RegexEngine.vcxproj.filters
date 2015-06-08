@@ -30,6 +30,9 @@
     <ClCompile Include="FA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DFA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RegexExpressionUnitTest.h">

@@ -150,3 +150,148 @@ FA::State FA::createState()
 	_allState.push_back(newState);
 	return newState;
 }
+
+bool FA::containsEndStates(vector<State> states)
+{
+	for (unsigned int i = 0; i < states.size(); i++)
+	{
+		for (unsigned int j = 0; j < _endState.size(); j++)
+		{
+			if (states[i] == _endState[j])
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool FA::isSupportSymbol(char c)
+{
+	if ((c >= 'a' && c <= 'z')
+		|| c >= 'A' && c <= 'Z')
+	{
+		return true;
+	}
+
+	return false;
+}
+
+///preproess to parse for regex string
+// 1 add "&" for AND regex operation
+// 2 add "#" for Regex End operation
+void FA::preprocess()
+{
+	string processedStr;
+	string str = _exp;
+
+	if (str.empty())
+	{
+		return;
+	}
+
+	// step1: add operator '&'
+	int indexP = -1;
+
+	for (unsigned int i = 0; i < str.size(); i++)
+	{
+		if (indexP != -1 && (
+			((isSupportSymbol(str[indexP])
+			|| RegexOperatorFactory::GetRegexObject(str[indexP])->GetType() == RegexStarOperatorType
+			|| RegexOperatorFactory::GetRegexObject(str[indexP])->GetType() == RegexRightParenthesesType)
+			&& isSupportSymbol(str[i]))
+			|| (isSupportSymbol(str[indexP]) && RegexOperatorFactory::GetRegexObject(str[i])->GetType() == RegexLeftParenthesesType)))
+		{
+			processedStr += '&';
+		}
+
+		processedStr += str[i];
+		indexP = i;
+	}
+
+	//step2: add '#' as sentinel
+	processedStr += '#';
+
+	_normalizedExp = processedStr;
+}
+
+
+FA::SubGraphInfo FA::performANDOperator(SubGraphInfo dest, SubGraphInfo src)
+{
+	createTransite(src.endState, kNULLTransite, dest.startState);
+
+	SubGraphInfo info;
+	info.startState = src.startState;
+	info.endState = dest.endState;
+	return info;
+}
+
+FA::SubGraphInfo FA::performOROperator(SubGraphInfo dest, SubGraphInfo src)
+{
+	State startState = createState();
+	createTransite(startState, kNULLTransite, dest.startState);
+	createTransite(startState, kNULLTransite, src.startState);
+
+	State endState = createState();
+	createTransite(src.endState, kNULLTransite, endState);
+	createTransite(dest.endState, kNULLTransite, endState);
+
+	SubGraphInfo info;
+	info.startState = startState;
+	info.endState = endState;
+
+	return info;
+}
+
+FA::SubGraphInfo FA::performSTAROperator(SubGraphInfo a)
+{
+	createTransite(a.endState, kNULLTransite, a.startState);
+
+	State startState = createState();
+	State endState = createState();
+
+	createTransite(startState, kNULLTransite, a.startState);
+	createTransite(startState, kNULLTransite, endState);
+	createTransite(a.endState, kNULLTransite, endState);
+
+	SubGraphInfo info;
+	info.startState = startState;
+	info.endState = endState;
+	return info;
+}
+
+FA::SubGraphInfo FA::createSingleCharState(char a)
+{
+	State startState = createState();
+	State endState = createState();
+	createTransite(startState, a, endState);
+
+	SubGraphInfo info;
+	info.startState = startState;
+	info.endState = endState;
+
+	return info;
+}
+
+bool FA::createTransite(State startState, char c, State endState)
+{
+	while (startState >= _transitionTable.size())
+	{
+		map<char, vector<State>> tmpMap;
+		_transitionTable.push_back(tmpMap);
+	}
+
+	if (_transitionTable[startState].find(c) != _transitionTable[startState].end())
+	{
+		_transitionTable[startState][c].push_back(endState);
+	}
+	else
+	{
+		vector<State> endStates;
+		endStates.push_back(endState);
+		_transitionTable[startState].insert(std::pair<char, vector<State>>(c, endStates));
+	}
+
+	return true;
+}

@@ -101,6 +101,9 @@ void RegexExpressionUnitTest::RegexParserNFAUnitTest()
 
 void RegexExpressionUnitTest::RegexParserDFAUnitTest()
 {
-
+	// positive cases
+	RegexExpression regexExp("a(b|c)*b");
+	bool bSuccess1 = regexExp.ParseUsingDFA("ab");
+	assert(bSuccess1);
 
 }

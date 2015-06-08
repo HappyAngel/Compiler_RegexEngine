@@ -15,11 +15,11 @@ class FA
 {
 protected:
 	typedef unsigned int State;
-	typedef struct SubNFAGraphInfo
+	typedef struct SubGraphInfo
 	{
 		State startState;
 		State endState;
-	}SubNFAGraphInfo;
+	}SubGraphInfo;
 
 	State _startState;
 	vector<State> _endState;
@@ -40,17 +40,17 @@ protected:
 	class RegexOperand
 	{
 	private:
-		SubNFAGraphInfo _info;
+		SubGraphInfo _info;
 
 	public:
 
-		RegexOperand(SubNFAGraphInfo info)
+		RegexOperand(SubGraphInfo info)
 		{
 			_info = info;
 		}
 
 
-		SubNFAGraphInfo GetValue()
+		SubGraphInfo GetValue()
 		{
 			return _info;
 		}
@@ -141,7 +141,7 @@ protected:
 	public:
 		virtual RegexOperand* eval(FA* fa, vector<RegexOperand*> opVector)
 		{
-			SubNFAGraphInfo info;
+			SubGraphInfo info;
 			info.startState = 0;
 			info.endState = 0;
 			return new RegexOperand(info);
@@ -163,7 +163,7 @@ protected:
 	public:
 		virtual RegexOperand* eval(FA* fa, vector<RegexOperand*> opVector)
 		{
-			SubNFAGraphInfo info;
+			SubGraphInfo info;
 			info.startState = 0;
 			info.endState = 0;
 			return new RegexOperand(info);
@@ -185,7 +185,7 @@ protected:
 	public:
 		virtual RegexOperand* eval(FA* fa, vector<RegexOperand*> opVector)
 		{
-			SubNFAGraphInfo info;
+			SubGraphInfo info;
 			info.startState = 0;
 			info.endState = 0;
 			return new RegexOperand(info);
@@ -246,18 +246,18 @@ protected:
 
 
 protected:
-	virtual bool isSupportSymbol (char c) = 0;
+	const char kNULLTransite = '~';
 
-	virtual SubNFAGraphInfo createSingleCharState(char a) = 0;
+	bool containsEndStates(vector<State> states);
 
-	virtual bool createTransite(State startState, char c, State endState) = 0;
+	bool isSupportSymbol (char c);
 
 	State createState();
 
 	///preproess to parse for regex string
 	// 1 add "&" for AND regex operation
 	// 2 add "#" for Regex End operation
-	virtual void preprocess() = 0;
+	void preprocess();
 
 	virtual bool evalByOperatorType(RegexOperator* pRegOperator, stack<RegexOperand*>& operands);
 
@@ -265,11 +265,15 @@ protected:
 	// return true on success and set outputValue
 	virtual bool eval();
 
-	virtual SubNFAGraphInfo performANDOperator(SubNFAGraphInfo a, SubNFAGraphInfo b) = 0;
+	virtual bool createTransite(State startState, char c, State endState);
 
-	virtual SubNFAGraphInfo performOROperator(SubNFAGraphInfo a, SubNFAGraphInfo b) = 0;
+	virtual SubGraphInfo performANDOperator(SubGraphInfo a, SubGraphInfo b);
 
-	virtual SubNFAGraphInfo performSTAROperator(SubNFAGraphInfo a) = 0;
+	virtual SubGraphInfo performOROperator(SubGraphInfo a, SubGraphInfo b);
+
+	virtual SubGraphInfo performSTAROperator(SubGraphInfo a);
+
+	virtual SubGraphInfo createSingleCharState(char a);
 
 public:
 	FA(string regexStr)
@@ -277,33 +281,23 @@ public:
 		_exp = regexStr;
 	}
 
-	virtual bool IsAccept(string strToParse) = 0;
+	~FA()
+	{
+		// need to destruct all the fields here
+
+	}
+
+	virtual bool isAccept(string strToParse) = 0;
 
 	virtual vector<string> extractMatchStrings(string strToExtract) = 0;
 };
 
 class NFA : public FA
 {
+	friend class DFA;
 private:
-	virtual bool isSupportSymbol(char c);
-
-	virtual void preprocess();
-
-	virtual bool createTransite(State startState, char c, State endState);
-
-	virtual SubNFAGraphInfo performANDOperator(SubNFAGraphInfo a, SubNFAGraphInfo b);
-
-	virtual SubNFAGraphInfo performOROperator(SubNFAGraphInfo a, SubNFAGraphInfo b);
-
-	virtual SubNFAGraphInfo performSTAROperator(SubNFAGraphInfo a);
-
-	virtual SubNFAGraphInfo createSingleCharState(char a);
 
 	vector<State> findALLNULLPathStatesFromStates(vector<State> states);
-
-	bool containsEndStates(vector<State> states);
-
-	const char kNULLTransite = '~';
 
 	int simulateNFA(string strToParse);
 
@@ -313,11 +307,45 @@ public:
 		preprocess();
 	}
 
-	bool BuildNFA();
+	bool buildNFA();
 
-	virtual bool IsAccept(string strToParse);
+	virtual bool isAccept(string strToParse);
 
 	virtual vector<string> extractMatchStrings(string strToExtract);
+};
+
+class DFA : public FA
+{
+
+private:
+	void buildDFAFromNFA(NFA nfa);
+	int getDFAStateByNFAStates(vector<State> states);
+
+	NFA* _pNFA;
+	vector<vector<State>> _dfaNFAStatesMap;
+
+public:
+	DFA(NFA* pNFA) : FA("")
+	{
+		_pNFA = pNFA;
+	}
+
+	~DFA()
+	{
+		//delete _pNFA;
+	}
+
+	bool buildDFAFromNFA();
+
+	virtual bool isAccept(string strToParse)
+	{
+		return true;
+	}
+
+	virtual vector<string> extractMatchStrings(string strToExtract)
+	{
+		return  vector<string>();
+	}
 };
 
 class RegexExpression
@@ -344,12 +372,12 @@ public:
 	{
 		NFA nfa(_exp);
 
-		if (!nfa.BuildNFA())
+		if (!nfa.buildNFA())
 		{
 			return false;
 		}
 
-		if (!nfa.IsAccept(strToParse))
+		if (!nfa.isAccept(strToParse))
 		{
 			return false;
 		}
@@ -360,7 +388,21 @@ public:
 	// parse exp using DFA
 	bool ParseUsingDFA(string strToParse)
 	{
+		NFA nfa(_exp);
 
+		if (!nfa.buildNFA())
+		{
+			return false;
+		}
+
+		DFA dfa(&nfa);
+
+		if (!dfa.buildDFAFromNFA())
+		{
+			return false;
+		}
+
+		return true;
 	}
 	
 	// extract strings using NFA
@@ -370,7 +412,7 @@ public:
 
 		NFA nfa(_exp);
 
-		if (!nfa.BuildNFA())
+		if (!nfa.buildNFA())
 		{
 			return result;
 		}
