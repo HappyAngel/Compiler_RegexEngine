@@ -167,6 +167,19 @@ bool FA::containsEndStates(vector<State> states)
 	return false;
 }
 
+bool FA::isInEndStates(State state)
+{
+	for (unsigned int j = 0; j < _endState.size(); j++)
+	{
+		if (state == _endState[j])
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool FA::isSupportSymbol(char c)
 {
 	if ((c >= 'a' && c <= 'z')

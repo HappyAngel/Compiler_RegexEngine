@@ -24,6 +24,7 @@ protected:
 	State _startState;
 	vector<State> _endState;
 	vector<State> _allState;
+
 	vector<map<char,vector<State>>> _transitionTable;
 
 	// raw regex expression to parse
@@ -249,6 +250,7 @@ protected:
 	const char kNULLTransite = '~';
 
 	bool containsEndStates(vector<State> states);
+	bool isInEndStates(State state);
 
 	bool isSupportSymbol (char c);
 
@@ -420,6 +422,13 @@ public:
 		}
 
 		result = nfa.extractMatchStrings(strToExtract);
+		return result;
+	}
+
+	vector<string> ExtractUsingDFA(string strToExtract)
+	{
+		vector<string> result;
+
 		return result;
 	}
 };

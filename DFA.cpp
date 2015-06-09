@@ -155,8 +155,38 @@ bool DFA::isAccept(string strToParse)
 		return false;
 	}
 
+	State s = _startState;
 
+	for (int i = 0; i < strToParse.length(); i++)
+	{
+		if (_transitionTable.size() <= (unsigned int)s)
+		{
+			if (isInEndStates(s))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (_transitionTable[s].find(strToParse[i]) != _transitionTable[s].end())
+			{
+				s = _transitionTable[s][strToParse[i]][0];
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
 
+	if (isInEndStates(s))
+	{
+		return true;
+	}
 
-	return true;
+	return false;
 }
