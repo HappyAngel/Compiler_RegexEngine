@@ -308,3 +308,35 @@ bool FA::createTransite(State startState, char c, State endState)
 
 	return true;
 }
+
+vector<string> FA::extractMatchStrings(string strToExtract)
+{
+	vector<string> result;
+
+	int index = FindFirstMatchedString(strToExtract);
+	int prevIndex = 0;
+
+	while (index >= 0)
+	{
+		if (index == 0)
+		{
+			index = prevIndex + 1;
+			prevIndex = index;
+		}
+		else
+		{
+			result.push_back(strToExtract.substr(prevIndex, index));
+			index = prevIndex + index;
+			prevIndex = index;
+		}
+
+		if (index >= strToExtract.size())
+		{
+			break;
+		}
+
+		index = FindFirstMatchedString(strToExtract.substr(index));
+	}
+
+	return result;
+}

@@ -157,7 +157,7 @@ bool DFA::isAccept(string strToParse)
 
 	State s = _startState;
 
-	for (int i = 0; i < strToParse.length(); i++)
+	for (unsigned int i = 0; i < strToParse.length(); i++)
 	{
 		if (_transitionTable.size() <= (unsigned int)s)
 		{

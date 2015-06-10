@@ -96,6 +96,10 @@ void RegexExpressionUnitTest::RegexParserNFAUnitTest()
 	results = regexExp302.ExtractUsingNFA("ba");
 	assert(results.size() == 1);
 
+	//RegexExpression regexExp303("aab");
+	//results = regexExp303.ExtractUsingNFA("aaab");
+	//assert(results.size() == 1);
+
 	cout<<"ALL RegexParser NFA Unit Test Passed!"<<endl;
 }
 

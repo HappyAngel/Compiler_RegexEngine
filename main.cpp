@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-	//RegexExpressionUnitTest::RegexParserNFAUnitTest();	
+	RegexExpressionUnitTest::RegexParserNFAUnitTest();	
 	RegexExpressionUnitTest::RegexParserDFAUnitTest();
 	//cout<<"Convert string to Regex Parse tree done with result: "<< (bSuccess1 ? "True" : "False") <<endl;
 	int a;

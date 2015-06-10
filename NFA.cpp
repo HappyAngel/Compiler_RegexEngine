@@ -95,34 +95,7 @@ bool NFA::buildNFA()
 	return eval();
 }
 
-vector<string> NFA::extractMatchStrings(string strToExtract)
+int NFA::FindFirstMatchedString(string strToExtract)
 {
-	vector<string> result;
-
-	int index = simulateNFA(strToExtract);
-	int prevIndex = 0;
-
-	while (index >= 0)
-	{
-		if (index == 0)
-		{
-			index = prevIndex + 1;
-			prevIndex = index;
-		}
-		else
-		{
-			result.push_back(strToExtract.substr(prevIndex, index));
-			index = prevIndex + index;
-			prevIndex = index;
-		}
-
-		if (index >= strToExtract.size())
-		{
-			break;
-		}
-
-		index = simulateNFA(strToExtract.substr(index));
-	}
-
-	return result;
+	return simulateNFA(strToExtract);
 }

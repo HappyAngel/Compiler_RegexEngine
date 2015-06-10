@@ -277,6 +277,8 @@ protected:
 
 	virtual SubGraphInfo createSingleCharState(char a);
 
+	virtual int FindFirstMatchedString(string strToExtract) = 0;
+
 public:
 	FA(string regexStr)
 	{
@@ -291,7 +293,7 @@ public:
 
 	virtual bool isAccept(string strToParse) = 0;
 
-	virtual vector<string> extractMatchStrings(string strToExtract) = 0;
+	virtual vector<string> extractMatchStrings(string strToExtract);
 };
 
 class NFA : public FA
@@ -303,6 +305,9 @@ private:
 
 	int simulateNFA(string strToParse);
 
+protected:
+	virtual int FindFirstMatchedString(string strToExtract);
+
 public:
 	NFA(string regexStr) : FA(regexStr)
 	{
@@ -312,8 +317,6 @@ public:
 	bool buildNFA();
 
 	virtual bool isAccept(string strToParse);
-
-	virtual vector<string> extractMatchStrings(string strToExtract);
 };
 
 class DFA : public FA
@@ -325,6 +328,12 @@ private:
 
 	NFA* _pNFA;
 	vector<vector<State>> _dfaNFAStatesMap;
+
+protected:
+	virtual int FindFirstMatchedString(string strToExtract)
+	{
+		return 0;
+	}
 
 public:
 	DFA(NFA* pNFA) : FA("")
@@ -340,11 +349,6 @@ public:
 	bool buildDFAFromNFA();
 
 	virtual bool isAccept(string strToParse);
-
-	virtual vector<string> extractMatchStrings(string strToExtract)
-	{
-		return  vector<string>();
-	}
 };
 
 class RegexExpression
