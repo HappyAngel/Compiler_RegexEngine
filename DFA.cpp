@@ -148,45 +148,41 @@ int DFA::getDFAStateByNFAStates(vector<State> states)
 	return -1;
 }
 
-bool DFA::isAccept(string strToParse)
+// parse a string {strToParse} and return the accept string's index, where [0, index) is the accept string
+// if no accept occurs, return -1
+int DFA::FindFirstMatchedString(string strToParse)
 {
 	if (_transitionTable.empty())
 	{
-		return false;
+		return -1;
 	}
 
 	State s = _startState;
+	unsigned int i = 0;
 
-	for (unsigned int i = 0; i < strToParse.length(); i++)
+	for (; i < strToParse.length(); i++)
 	{
-		if (_transitionTable.size() <= (unsigned int)s)
+		if (_transitionTable.size() >(unsigned int)s && _transitionTable[s].find(strToParse[i]) != _transitionTable[s].end())
 		{
-			if (isInEndStates(s))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			s = _transitionTable[s][strToParse[i]][0];
 		}
 		else
 		{
-			if (_transitionTable[s].find(strToParse[i]) != _transitionTable[s].end())
-			{
-				s = _transitionTable[s][strToParse[i]][0];
-			}
-			else
-			{
-				return false;
-			}
+			break;
 		}
+		
 	}
 
+	// assert 3 situations:
+	// 1 i == strToParse.length() means string is over
+	// 2 _transitionTable.size() <= s, means state s has no output line
+	// 3 _transionTable[s].find(strToParse[i]) == _transitionTable[s].end(), means stuck at some point
 	if (isInEndStates(s))
 	{
-		return true;
+		return i;
 	}
-
-	return false;
+	else
+	{
+		return -1;
+	}
 }

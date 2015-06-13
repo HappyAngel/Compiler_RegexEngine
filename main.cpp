@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <iostream>
+#include <fstream>
 #include <stack>
 #include <string>
 #include <stdlib.h>
@@ -10,9 +11,30 @@ using namespace std;
 
 int main()
 {
-	RegexExpressionUnitTest::RegexParserNFAUnitTest();	
-	RegexExpressionUnitTest::RegexParserDFAUnitTest();
-	//cout<<"Convert string to Regex Parse tree done with result: "<< (bSuccess1 ? "True" : "False") <<endl;
+	//RegexExpressionUnitTest::RegexParserNFAUnitTest();	
+	//RegexExpressionUnitTest::RegexParserDFAUnitTest();
+
+	ifstream inputfile("test.txt");
+	string line;
+	string wholeString;
+
+	if (inputfile.is_open())
+	{
+		while (getline(inputfile, line))
+		{
+			wholeString += line;
+		}
+	}
+
+	RegexExpression regexExp("Pa*l");
+	vector<string> results = regexExp.ExtractUsingDFA(wholeString);
+
+	for (unsigned int i = 0; i < results.size(); i++)
+	{
+		cout << results[i] << endl;
+	}
+
+
 	int a;
 	cin>>a;
 

@@ -313,30 +313,37 @@ vector<string> FA::extractMatchStrings(string strToExtract)
 {
 	vector<string> result;
 
-	int index = FindFirstMatchedString(strToExtract);
-	int prevIndex = 0;
+	unsigned int index = 0;
 
-	while (index >= 0)
+	while (index < strToExtract.length())
 	{
-		if (index == 0)
+		int matchedIndex = FindFirstMatchedString(strToExtract.substr(index, strToExtract.length() - index));
+
+		if (matchedIndex > 0)
 		{
-			index = prevIndex + 1;
-			prevIndex = index;
+			result.push_back(strToExtract.substr(index, matchedIndex));
+			index = index + matchedIndex;
 		}
 		else
 		{
-			result.push_back(strToExtract.substr(prevIndex, index));
-			index = prevIndex + index;
-			prevIndex = index;
+			index++; //to do: try to improve perf here
 		}
-
-		if (index >= strToExtract.size())
-		{
-			break;
-		}
-
-		index = FindFirstMatchedString(strToExtract.substr(index));
 	}
 
 	return result;
+}
+
+// Accept means strToParse whole exact string will be accepted
+bool FA::isAccept(string strToParse)
+{
+	int index = FindFirstMatchedString(strToParse);
+
+	if (index == strToParse.length())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

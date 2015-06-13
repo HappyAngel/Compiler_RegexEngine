@@ -1,21 +1,7 @@
 #include "interfaces.h"
 
-bool NFA::isAccept(string strToParse)
-{
-	int index = simulateNFA(strToParse);
-	
-	if (index < 0 || (!strToParse.empty() && index == 0))
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
-// parse a string {strToParse} and return the accept string [0, index) in the string
-// if no accept occues, return -1
+// parse a string {strToParse} and return the accept string's index, where [0, index) is the accept string
+// if no accept occurs, return -1
 int NFA::simulateNFA(string strToParse)
 {
 	if (_transitionTable.empty())
@@ -25,12 +11,15 @@ int NFA::simulateNFA(string strToParse)
 
 	vector<State> currentStates;
 	currentStates.push_back(_startState);
-	vector<State> tmpStates;
-	// use simulate NFA algorithms to get results
-	for (unsigned int i = 0; i < strToParse.length(); i++)
-	{
-		currentStates = findALLNULLPathStatesFromStates(currentStates);
+	currentStates = findALLNULLPathStatesFromStates(currentStates);
 
+	vector<State> tmpStates;
+
+	// use simulate NFA algorithms to get results
+	unsigned int i = 0;
+
+	for (; i < strToParse.length(); i++)
+	{
 		for (unsigned int j = 0; j < currentStates.size(); j++)
 		{
 			if (_transitionTable.size() > currentStates[j] && _transitionTable[currentStates[j]].find(strToParse[i]) != _transitionTable[currentStates[j]].end())
@@ -41,20 +30,20 @@ int NFA::simulateNFA(string strToParse)
 
 		if (tmpStates.empty())
 		{
-			return i;
+			break;
 		}
 		else
 		{
 			currentStates = tmpStates;
+			currentStates = findALLNULLPathStatesFromStates(currentStates);
 			tmpStates.clear();
 		}
 	}
 
-	currentStates = findALLNULLPathStatesFromStates(currentStates);
-
+	// stuck in some notes or complete the graph 
 	if (containsEndStates(currentStates))
 	{
-		return strToParse.length();
+		return i;
 	}
 	else
 	{

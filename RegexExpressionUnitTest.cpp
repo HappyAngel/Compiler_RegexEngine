@@ -90,15 +90,27 @@ void RegexExpressionUnitTest::RegexParserNFAUnitTest()
 
 	RegexExpression regexExp301("a*b*");
 	results = regexExp301.ExtractUsingNFA("dddanljabfdsfa");
+	for (unsigned int i = 0; i < results.size(); i++)
+	{
+		cout << results[i] << endl;
+	}
 	assert(results.size() == 3);
 
 	RegexExpression regexExp302("a*");
 	results = regexExp302.ExtractUsingNFA("ba");
+	for (unsigned int i = 0; i < results.size(); i++)
+	{
+		cout << results[i] << endl;
+	}
 	assert(results.size() == 1);
 
-	//RegexExpression regexExp303("aab");
-	//results = regexExp303.ExtractUsingNFA("aaab");
-	//assert(results.size() == 1);
+	RegexExpression regexExp303("aab");
+	results = regexExp303.ExtractUsingNFA("aaab");
+	for (unsigned int i = 0; i < results.size(); i++)
+	{
+		cout << results[i] << endl;
+	}
+	assert(results.size() == 1);
 
 	cout<<"ALL RegexParser NFA Unit Test Passed!"<<endl;
 }
@@ -185,17 +197,33 @@ void RegexExpressionUnitTest::RegexParserDFAUnitTest()
 	assert(!bSuccess1);
 
 	// extract string test
-	//RegexExpression regexExp300("a*b*");
-	//vector<string> results = regexExp300.ExtractUsingDFA("");
-	//assert(results.size() == 0);
+	RegexExpression regexExp300("a*b*");
+	vector<string> results = regexExp300.ExtractUsingDFA("");
+	assert(results.size() == 0);
 
-	//RegexExpression regexExp301("a*b*");
-	//results = regexExp301.ExtractUsingDFA("dddanljabfdsfa");
-	//assert(results.size() == 3);
+	RegexExpression regexExp301("a*b*");
+	results = regexExp301.ExtractUsingDFA("dddanljabfdsfa");
+	for (unsigned int i = 0; i < results.size(); i++)
+	{
+		cout << results[i] << endl;
+	}
+	assert(results.size() == 3);
 
-	//RegexExpression regexExp302("a*");
-	//results = regexExp302.ExtractUsingDFA("ba");
-	//assert(results.size() == 1);
+	RegexExpression regexExp302("a*");
+	results = regexExp302.ExtractUsingDFA("ba");
+	for (unsigned int i = 0; i < results.size(); i++)
+	{
+		cout << results[i] << endl;
+	}
+	assert(results.size() == 1);
+
+	RegexExpression regexExp303("aab");
+	results = regexExp303.ExtractUsingDFA("aaab");
+	for (unsigned int i = 0; i < results.size(); i++)
+	{
+		cout << results[i] << endl;
+	}
+	assert(results.size() == 1);
 
 	cout << "ALL RegexParser DFA Unit Test Passed!" << endl;
 

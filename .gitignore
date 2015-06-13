@@ -53,3 +53,8 @@ Debug/RegexEngine.log
 Debug/RegexEngine.tlog/cl.command.1.tlog
 *.tlog
 *.idb
+*.sbr
+Debug/test.txt
+*.bsc
+CodeMap1.dgml
+*.txt

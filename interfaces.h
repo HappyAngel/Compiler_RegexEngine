@@ -25,6 +25,7 @@ protected:
 	vector<State> _endState;
 	vector<State> _allState;
 
+	// heart data structure to store FA states/connections
 	vector<map<char,vector<State>>> _transitionTable;
 
 	// raw regex expression to parse
@@ -245,9 +246,11 @@ protected:
 
 	};
 
+	const char kNULLTransite = '~';
 
 protected:
-	const char kNULLTransite = '~';
+
+	// shared functions with subclasses
 
 	bool containsEndStates(vector<State> states);
 	bool isInEndStates(State state);
@@ -291,14 +294,16 @@ public:
 
 	}
 
-	virtual bool isAccept(string strToParse) = 0;
+	virtual bool isAccept(string strToParse);
 
 	virtual vector<string> extractMatchStrings(string strToExtract);
 };
 
+// class NFA
 class NFA : public FA
 {
 	friend class DFA;
+
 private:
 
 	vector<State> findALLNULLPathStatesFromStates(vector<State> states);
@@ -306,6 +311,8 @@ private:
 	int simulateNFA(string strToParse);
 
 protected:
+	// interfaces:
+
 	virtual int FindFirstMatchedString(string strToExtract);
 
 public:
@@ -315,25 +322,25 @@ public:
 	}
 
 	bool buildNFA();
-
-	virtual bool isAccept(string strToParse);
 };
 
+// class for DFA
 class DFA : public FA
 {
-
 private:
 	void buildDFAFromNFA(NFA nfa);
+
 	int getDFAStateByNFAStates(vector<State> states);
 
 	NFA* _pNFA;
+
+	// map from each DFA states to NFA states set
 	vector<vector<State>> _dfaNFAStatesMap;
 
 protected:
-	virtual int FindFirstMatchedString(string strToExtract)
-	{
-		return 0;
-	}
+	// interface
+	// get the index of the matched string, that's [0, index) of strToExtract match the regex
+	virtual int FindFirstMatchedString(string strToExtract);
 
 public:
 	DFA(NFA* pNFA) : FA("")
@@ -347,10 +354,9 @@ public:
 	}
 
 	bool buildDFAFromNFA();
-
-	virtual bool isAccept(string strToParse);
 };
 
+// class for Regex parsing and extracting
 class RegexExpression
 {
 private:
@@ -370,69 +376,15 @@ public:
 		return _exp;
 	}
 
-	// parse exp to get NFA, and simulate to get results
-	bool ParseUsingNFA(string strToParse)
-	{
-		NFA nfa(_exp);
+	// parse exp using NFA, the whole string must matched
+	bool ParseUsingNFA(string strToParse);
 
-		if (!nfa.buildNFA())
-		{
-			return false;
-		}
-
-		if (!nfa.isAccept(strToParse))
-		{
-			return false;
-		}
-		
-		return true;
-	}
-
-	// parse exp using DFA
-	bool ParseUsingDFA(string strToParse)
-	{
-		NFA nfa(_exp);
-
-		if (!nfa.buildNFA())
-		{
-			return false;
-		}
-
-		DFA dfa(&nfa);
-
-		if (!dfa.buildDFAFromNFA())
-		{
-			return false;
-		}
-
-		if (!dfa.isAccept(strToParse))
-		{
-			return false;
-		}
-
-		return true;
-	}
+	// parse exp using DFA, the whole string must matched
+	bool ParseUsingDFA(string strToParse);
 	
-	// extract strings using NFA
-	vector<string> ExtractUsingNFA(string strToExtract)
-	{
-		vector<string> result;
+	// extract strings using NFA that matched the regex
+	vector<string> ExtractUsingNFA(string strToExtract);
 
-		NFA nfa(_exp);
-
-		if (!nfa.buildNFA())
-		{
-			return result;
-		}
-
-		result = nfa.extractMatchStrings(strToExtract);
-		return result;
-	}
-
-	vector<string> ExtractUsingDFA(string strToExtract)
-	{
-		vector<string> result;
-
-		return result;
-	}
+	// extract stirngs using DFA that matched the regex
+	vector<string> ExtractUsingDFA(string strToExtract);
 };
