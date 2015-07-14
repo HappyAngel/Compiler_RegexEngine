@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="RegexExpressionUnitTest" Collapsed="true">
-    <Position X="18.25" Y="1" Width="4.25" />
+    <Position X="15.5" Y="2.5" Width="4.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>RegexExpressionUnitTest.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FA">
-    <Position X="8" Y="0.75" Width="2.75" />
+  <Class Name="FA" Collapsed="true">
+    <Position X="7.25" Y="3.75" Width="2.75" />
     <NestedTypes>
       <Class Name="FA::RegexStarOperator" Collapsed="true">
         <TypeIdentifier>
@@ -77,21 +77,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="NFA">
-    <Position X="10.25" Y="7.5" Width="3.75" />
+    <Position X="11" Y="7.25" Width="3.75" />
     <TypeIdentifier>
       <HashCode>IAAAAAAAAAAAIAAAAAQABAAAAAAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>interfaces.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RegexExpression">
-    <Position X="13.75" Y="2.75" Width="6.5" />
+  <Class Name="RegexExpression" Collapsed="true">
+    <Position X="10.25" Y="2.25" Width="6.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAEIAAAAAAAAAAABAgAEAAAAAAAACQAA=</HashCode>
       <FileName>interfaces.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DFA" Collapsed="true">
-    <Position X="4.25" Y="8" Width="1.5" />
+  <Class Name="DFA">
+    <Position X="3.75" Y="7.75" Width="3" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAAAAAAAAAAABAAgAAgACAAAAAgAAABAAAAA=</HashCode>
       <FileName>interfaces.h</FileName>
