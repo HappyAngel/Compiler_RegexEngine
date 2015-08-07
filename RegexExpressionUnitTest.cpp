@@ -118,7 +118,7 @@ void RegexExpressionUnitTest::RegexParserNFAUnitTest()
 void RegexExpressionUnitTest::RegexParserDFAUnitTest()
 {
 	// positive cases
-	RegexExpression regexExp("a(b|c)*b");
+	RegexExpression regexExp("a*b");
 	bool bSuccess1 = regexExp.ParseUsingDFA("ab");
 	assert(bSuccess1);
 
@@ -196,18 +196,26 @@ void RegexExpressionUnitTest::RegexParserDFAUnitTest()
 	bSuccess1 = regexExp9.ParseUsingDFA("test");
 	assert(!bSuccess1);
 
+	RegexExpression regexExp10("a.c");
+	bSuccess1 = regexExp10.ParseUsingDFA("atc");
+	assert(bSuccess1);
+
+	RegexExpression regexExp11("a.*c");
+	bSuccess1 = regexExp11.ParseUsingDFA("atsdfssfdc");
+	assert(bSuccess1);
+
 	// extract string test
 	RegexExpression regexExp300("a*b*");
 	vector<string> results = regexExp300.ExtractUsingDFA("");
 	assert(results.size() == 0);
 
-	RegexExpression regexExp301("a*b*");
-	results = regexExp301.ExtractUsingDFA("dddanljabfdsfa");
+	RegexExpression regexExp301("w*");
+	results = regexExp301.ExtractUsingDFA("wwwwwwwww");
 	for (unsigned int i = 0; i < results.size(); i++)
 	{
 		cout << results[i] << endl;
 	}
-	assert(results.size() == 3);
+	assert(results.size() == 1);
 
 	RegexExpression regexExp302("a*");
 	results = regexExp302.ExtractUsingDFA("ba");

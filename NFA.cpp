@@ -22,9 +22,11 @@ int NFA::simulateNFA(string strToParse)
 	{
 		for (unsigned int j = 0; j < currentStates.size(); j++)
 		{
-			if (_transitionTable.size() > currentStates[j] && _transitionTable[currentStates[j]].find(strToParse[i]) != _transitionTable[currentStates[j]].end())
+			vector<State> results = GetStatesFromTransitionTable(currentStates[j], strToParse[i]);
+
+			if (results.size() > 0)
 			{
-				tmpStates.insert(tmpStates.end(), _transitionTable[currentStates[j]][strToParse[i]].begin(), _transitionTable[currentStates[j]][strToParse[i]].end());
+				tmpStates.insert(tmpStates.end(), results.begin(), results.end());
 			}
 		}
 
@@ -60,11 +62,12 @@ vector<NFA::State> NFA::findALLNULLPathStatesFromStates(vector<State> states)
 
 	while (headIndex < tailIndex)
 	{
-		if (_transitionTable.size() > results[headIndex] &&
-			_transitionTable[results[headIndex]].find(kNULLTransite) != _transitionTable[results[headIndex]].end())
+		vector<State> findResults = GetStatesFromTransitionTable(results[headIndex], kNULLTransite);
+
+		if (findResults.size() > 0)
 		{
 			// to do: may add the same states.
-			results.insert(results.end(), _transitionTable[results[headIndex]][kNULLTransite].begin(), _transitionTable[results[headIndex]][kNULLTransite].end());
+			results.insert(results.end(), findResults.begin(), findResults.end());
 		}
 
 		headIndex++;

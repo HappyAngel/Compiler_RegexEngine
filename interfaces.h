@@ -248,13 +248,14 @@ protected:
 
 	const char kNULLTransite = '~';
 
+	const char kAnyCharMatch = '.';
 protected:
 
 	// shared functions with subclasses
 
 	bool containsEndStates(vector<State> states);
 	bool isInEndStates(State state);
-
+	vector<State> GetStatesFromTransitionTable(State s, char c);
 	bool isSupportSymbol (char c);
 
 	State createState();

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="RegexExpressionUnitTest" Collapsed="true">
-    <Position X="15.5" Y="2.5" Width="4.25" />
+    <Position X="15.25" Y="3.5" Width="4.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>RegexExpressionUnitTest.h</FileName>
@@ -9,68 +9,6 @@
   </Class>
   <Class Name="FA" Collapsed="true">
     <Position X="7.25" Y="3.75" Width="2.75" />
-    <NestedTypes>
-      <Class Name="FA::RegexStarOperator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="FA::RegexOrOperator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Struct Name="FA::SubGraphInfo" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Struct>
-      <Class Name="FA::RegexOperand" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="FA::RegexAndOperator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Typedef Name="FA::State" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Typedef>
-      <Enum Name="FA::RegexOperatorType" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-      <Class Name="FA::RegexEndOperator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="FA::RegexOperatorFactory" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="FA::RegexOperator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="FA::RegexRightParentheseOperator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="FA::RegexLeftParentheseOperator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>interfaces.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAgiEEACgEBQAAAAAAQAAAiCAgABEgAAIAABARAAQAg=</HashCode>
       <FileName>interfaces.h</FileName>

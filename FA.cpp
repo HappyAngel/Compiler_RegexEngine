@@ -187,8 +187,14 @@ bool FA::isSupportSymbol(char c)
 	{
 		return true;
 	}
-
-	return false;
+	else if (c == '.')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 ///preproess to parse for regex string
@@ -346,4 +352,31 @@ bool FA::isAccept(string strToParse)
 	{
 		return false;
 	}
+}
+
+vector<FA::State> FA::GetStatesFromTransitionTable(State s, char c)
+{
+	vector<State> results;
+
+	if (_transitionTable.size() <= s)
+	{
+		return results;
+	}
+
+	if (_transitionTable[s].find(c) != _transitionTable[s].end())
+	{
+		results.insert(results.end(),_transitionTable[s][c].begin(), _transitionTable[s][c].end());
+	}
+	else
+	{
+		if (c != kNULLTransite)
+		{
+			if (_transitionTable[s].find(kAnyCharMatch) != _transitionTable[s].end())
+			{
+				results.insert(results.end(), _transitionTable[s][kAnyCharMatch].begin(), _transitionTable[s][kAnyCharMatch].end());
+			}
+		}
+	}
+
+	return results;
 }

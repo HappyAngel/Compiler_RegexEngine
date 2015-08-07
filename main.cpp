@@ -12,9 +12,9 @@ using namespace std;
 int main()
 {
 	//RegexExpressionUnitTest::RegexParserNFAUnitTest();	
-	//RegexExpressionUnitTest::RegexParserDFAUnitTest();
+	RegexExpressionUnitTest::RegexParserDFAUnitTest();
 
-	ifstream inputfile("test.txt");
+	/*ifstream inputfile("test.txt");
 	string line;
 	string wholeString;
 
@@ -26,7 +26,7 @@ int main()
 		}
 	}
 
-	RegexExpression regexExp("Pa*l");
+	RegexExpression regexExp("a.*c");
 	vector<string> results = regexExp.ExtractUsingDFA(wholeString);
 
 	for (unsigned int i = 0; i < results.size(); i++)
@@ -34,6 +34,7 @@ int main()
 		cout << results[i] << endl;
 	}
 
+	cout << results.size() << endl;*/
 
 	int a;
 	cin>>a;

@@ -162,9 +162,11 @@ int DFA::FindFirstMatchedString(string strToParse)
 
 	for (; i < strToParse.length(); i++)
 	{
-		if (_transitionTable.size() >(unsigned int)s && _transitionTable[s].find(strToParse[i]) != _transitionTable[s].end())
+		vector<State> findResults = GetStatesFromTransitionTable(s, strToParse[i]);
+
+		if (findResults.size() > 0)
 		{
-			s = _transitionTable[s][strToParse[i]][0];
+			s = findResults[0];
 		}
 		else
 		{
