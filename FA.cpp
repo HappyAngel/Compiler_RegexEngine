@@ -1,3 +1,5 @@
+#include <ctype.h>
+#include <set>
 #include "interfaces.h"
 
 bool FA::evalByOperatorType(RegexOperator* pRegOperator, stack<RegexOperand*>& operands)
@@ -56,7 +58,7 @@ bool FA::eval()
 
 	for (unsigned int i = 0; i < processedStr.size(); i++)
 	{
-		if (isSupportSymbol(processedStr[i]))
+		if (isSupportOperand(processedStr[i]))
 		{
 			operands.push(new RegexOperand(createSingleCharState(processedStr[i])));
 		}
@@ -180,14 +182,13 @@ bool FA::isInEndStates(State state)
 	return false;
 }
 
-bool FA::isSupportSymbol(char c)
+bool FA::isSupportOperand(char c)
 {
-	if ((c >= 'a' && c <= 'z')
-		|| c >= 'A' && c <= 'Z')
+	if (RegexOperatorFactory::GetRegexObject(c) != NULL)
 	{
-		return true;
+		return false;
 	}
-	else if (c == '.')
+	else if (isascii(c))
 	{
 		return true;
 	}
@@ -216,11 +217,11 @@ void FA::preprocess()
 	for (unsigned int i = 0; i < str.size(); i++)
 	{
 		if (indexP != -1 && (
-			((isSupportSymbol(str[indexP])
+			((isSupportOperand(str[indexP])
 			|| RegexOperatorFactory::GetRegexObject(str[indexP])->GetType() == RegexStarOperatorType
 			|| RegexOperatorFactory::GetRegexObject(str[indexP])->GetType() == RegexRightParenthesesType)
-			&& isSupportSymbol(str[i]))
-			|| (isSupportSymbol(str[indexP]) && RegexOperatorFactory::GetRegexObject(str[i])->GetType() == RegexLeftParenthesesType)))
+			&& isSupportOperand(str[i]))
+			|| (isSupportOperand(str[indexP]) && RegexOperatorFactory::GetRegexObject(str[i])->GetType() == RegexLeftParenthesesType)))
 		{
 			processedStr += '&';
 		}
@@ -363,20 +364,22 @@ vector<FA::State> FA::GetStatesFromTransitionTable(State s, char c)
 		return results;
 	}
 
+	set<State> resultSet;
+
 	if (_transitionTable[s].find(c) != _transitionTable[s].end())
 	{
-		results.insert(results.end(),_transitionTable[s][c].begin(), _transitionTable[s][c].end());
-	}
-	else
-	{
-		if (c != kNULLTransite)
-		{
-			if (_transitionTable[s].find(kAnyCharMatch) != _transitionTable[s].end())
-			{
-				results.insert(results.end(), _transitionTable[s][kAnyCharMatch].begin(), _transitionTable[s][kAnyCharMatch].end());
-			}
-		}
+		resultSet.insert(_transitionTable[s][c].begin(), _transitionTable[s][c].end());
 	}
 
-	return results;
+	if (c != kNULLTransite)
+	{
+		if (_transitionTable[s].find(kAnyCharMatch) != _transitionTable[s].end())
+		{
+			resultSet.insert(_transitionTable[s][kAnyCharMatch].begin(), _transitionTable[s][kAnyCharMatch].end());
+		}
+	}
+	
+	vector<State> finalResults(resultSet.begin(), resultSet.end());
+
+	return finalResults;
 }

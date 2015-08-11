@@ -159,32 +159,46 @@ int DFA::FindFirstMatchedString(string strToParse)
 
 	State s = _startState;
 	unsigned int i = 0;
+	vector<State> currentStates;
+	currentStates.push_back(_startState);
+	vector<State> tmpStates;
+	int loggestMatchedIndex = -1;
 
 	for (; i < strToParse.length(); i++)
 	{
-		vector<State> findResults = GetStatesFromTransitionTable(s, strToParse[i]);
-
-		if (findResults.size() > 0)
+		for (unsigned int j = 0; j < currentStates.size(); j++)
 		{
-			s = findResults[0];
+			vector<State> results = GetStatesFromTransitionTable(currentStates[j], strToParse[i]);
+
+			if (results.size() > 0)
+			{
+				tmpStates.insert(tmpStates.end(), results.begin(), results.end());
+			}
+		}
+
+		// as we have '.' supported, thus we may match
+		// while still have states in tmp
+		if (containsEndStates(currentStates))
+		{
+			loggestMatchedIndex = i;
+		}
+
+		if (tmpStates.empty())
+		{
+			// no match found
+			break;
 		}
 		else
 		{
-			break;
+			currentStates = tmpStates;
+			tmpStates.clear();
 		}
-		
 	}
 
-	// assert 3 situations:
-	// 1 i == strToParse.length() means string is over
-	// 2 _transitionTable.size() <= s, means state s has no output line
-	// 3 _transionTable[s].find(strToParse[i]) == _transitionTable[s].end(), means stuck at some point
-	if (isInEndStates(s))
+	if (containsEndStates(currentStates))
 	{
-		return i;
+		loggestMatchedIndex = i;
 	}
-	else
-	{
-		return -1;
-	}
+
+	return loggestMatchedIndex;
 }

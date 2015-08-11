@@ -256,7 +256,7 @@ protected:
 	bool containsEndStates(vector<State> states);
 	bool isInEndStates(State state);
 	vector<State> GetStatesFromTransitionTable(State s, char c);
-	bool isSupportSymbol (char c);
+	bool isSupportOperand (char c);
 
 	State createState();
 

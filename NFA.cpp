@@ -9,14 +9,13 @@ int NFA::simulateNFA(string strToParse)
 		return -1;
 	}
 
+	// use simulate NFA algorithms to get results
 	vector<State> currentStates;
 	currentStates.push_back(_startState);
 	currentStates = findALLNULLPathStatesFromStates(currentStates);
-
 	vector<State> tmpStates;
-
-	// use simulate NFA algorithms to get results
 	unsigned int i = 0;
+	int loggestMatchedIndex = -1;
 
 	for (; i < strToParse.length(); i++)
 	{
@@ -30,8 +29,16 @@ int NFA::simulateNFA(string strToParse)
 			}
 		}
 
+		// as we have '.' supported, thus we may match
+		// while still have states in tmp
+		if (containsEndStates(currentStates))
+		{
+			loggestMatchedIndex = i;
+		}
+
 		if (tmpStates.empty())
 		{
+			// no match found
 			break;
 		}
 		else
@@ -42,15 +49,12 @@ int NFA::simulateNFA(string strToParse)
 		}
 	}
 
-	// stuck in some notes or complete the graph 
 	if (containsEndStates(currentStates))
 	{
-		return i;
+		loggestMatchedIndex = i;
 	}
-	else
-	{
-		return -1;
-	}
+
+	return loggestMatchedIndex;
 }
 
 vector<NFA::State> NFA::findALLNULLPathStatesFromStates(vector<State> states)
