@@ -35,6 +35,7 @@ bool FA::evalByOperatorType(RegexOperator* pRegOperator, stack<RegexOperand*>& o
 		break;
 
 	case RegexStarOperatorType:
+	case RegexQuestionOperatorType:
 		pOp1 = operands.top();
 		operands.pop();
 		pVec.push_back(pOp1);
@@ -214,11 +215,13 @@ void FA::preprocess()
 	// step1: add operator '&'
 	int indexP = -1;
 
+	// to do: refactor code to encapsulate variants
 	for (unsigned int i = 0; i < str.size(); i++)
 	{
 		if (indexP != -1 && (
 			((isSupportOperand(str[indexP])
 			|| RegexOperatorFactory::GetRegexObject(str[indexP])->GetType() == RegexStarOperatorType
+			|| RegexOperatorFactory::GetRegexObject(str[indexP])->GetType() == RegexQuestionOperatorType
 			|| RegexOperatorFactory::GetRegexObject(str[indexP])->GetType() == RegexRightParenthesesType)
 			&& isSupportOperand(str[i]))
 			|| (isSupportOperand(str[indexP]) && RegexOperatorFactory::GetRegexObject(str[i])->GetType() == RegexLeftParenthesesType)))
@@ -268,6 +271,21 @@ FA::SubGraphInfo FA::performSTAROperator(SubGraphInfo a)
 {
 	createTransite(a.endState, kNULLTransite, a.startState);
 
+	State startState = createState();
+	State endState = createState();
+
+	createTransite(startState, kNULLTransite, a.startState);
+	createTransite(startState, kNULLTransite, endState);
+	createTransite(a.endState, kNULLTransite, endState);
+
+	SubGraphInfo info;
+	info.startState = startState;
+	info.endState = endState;
+	return info;
+}
+
+FA::SubGraphInfo FA::performQuestionOperator(SubGraphInfo a)
+{
 	State startState = createState();
 	State endState = createState();
 
@@ -379,6 +397,7 @@ vector<FA::State> FA::GetStatesFromTransitionTable(State s, char c)
 		}
 	}
 	
+	// to do: investigate set & vector copy method to avoid initialization here
 	vector<State> finalResults(resultSet.begin(), resultSet.end());
 
 	return finalResults;

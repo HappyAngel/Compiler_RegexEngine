@@ -64,6 +64,7 @@ protected:
 		RegexStarOperatorType,
 		RegexOrOperatorType,
 		RegexAndOperatorType,
+		RegexQuestionOperatorType,
 		RegexLeftParenthesesType,
 		RegexRightParenthesesType,
 		RegexEndType
@@ -97,6 +98,25 @@ protected:
 		virtual RegexOperatorType GetType()
 		{
 			return RegexOperatorType::RegexStarOperatorType;
+		}
+	};
+
+	class RegexQuestionOperator : public RegexOperator
+	{
+	public:
+		virtual RegexOperand* eval(FA* fa, vector<RegexOperand*> opVector)
+		{
+			return new RegexOperand(fa->performQuestionOperator(opVector[0]->GetValue()));
+		}
+
+		virtual double GetPriority()
+		{
+			return 0.9;
+		}
+
+		virtual RegexOperatorType GetType()
+		{
+			return RegexOperatorType::RegexQuestionOperatorType;
 		}
 	};
 
@@ -228,6 +248,9 @@ protected:
 			case '&':
 				returnObj = new RegexAndOperator();
 				break;
+			case '?':
+				returnObj = new RegexQuestionOperator();
+				break;
 			case '(':
 				returnObj = new RegexLeftParentheseOperator();
 				break;
@@ -272,12 +295,14 @@ protected:
 	virtual bool eval();
 
 	virtual bool createTransite(State startState, char c, State endState);
-
+	
 	virtual SubGraphInfo performANDOperator(SubGraphInfo a, SubGraphInfo b);
-
+	// |
 	virtual SubGraphInfo performOROperator(SubGraphInfo a, SubGraphInfo b);
-
+	// *
 	virtual SubGraphInfo performSTAROperator(SubGraphInfo a);
+	// ?
+	virtual SubGraphInfo performQuestionOperator(SubGraphInfo a);
 
 	virtual SubGraphInfo createSingleCharState(char a);
 
