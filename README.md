@@ -8,8 +8,10 @@
      2. Concatenation;
      3. Kleene closure.
   3. Support char '.' to represent ANY chars;
+  4. Support Extended Regex standard like:
+     1. '?' operator;
 
 ### Planned features:
   1. PERF improve;
-  2. Escape string;
-  3. Extended Regex engine including:
+  2. Log improve;
+  3. Extended Regex engine including: + and etc
