@@ -13,10 +13,9 @@ bool FA::evalByOperatorType(RegexOperator* pRegOperator, stack<RegexOperand*>& o
 	RegexOperand* pOp1 = NULL;
 	RegexOperand* pOp2 = NULL;
 
-	switch (pRegOperator->GetType())
+	switch (pRegOperator->GetOperandNum())
 	{
-	case RegexAndOperatorType:
-	case RegexOrOperatorType:
+	case 2:
 
 		if (operands.size() < 2)
 		{
@@ -34,8 +33,7 @@ bool FA::evalByOperatorType(RegexOperator* pRegOperator, stack<RegexOperand*>& o
 		delete pOp2;
 		break;
 
-	case RegexStarOperatorType:
-	case RegexQuestionOperatorType:
+	case 1:
 		pOp1 = operands.top();
 		operands.pop();
 		pVec.push_back(pOp1);

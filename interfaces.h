@@ -80,6 +80,9 @@ protected:
 		virtual double GetPriority() = 0;
 
 		virtual RegexOperand* eval(FA* fa, vector<RegexOperand*> opVector) = 0;
+
+		// indicate how many operands current operator needs
+		virtual unsigned int GetOperandNum() = 0;
 	};
 
 	class RegexStarOperator : public RegexOperator
@@ -98,6 +101,11 @@ protected:
 		virtual RegexOperatorType GetType()
 		{
 			return RegexOperatorType::RegexStarOperatorType;
+		}
+
+		virtual unsigned int GetOperandNum()
+		{
+			return 1;
 		}
 	};
 
@@ -118,6 +126,11 @@ protected:
 		{
 			return RegexOperatorType::RegexQuestionOperatorType;
 		}
+
+		virtual unsigned int GetOperandNum()
+		{
+			return 1;
+		}
 	};
 
 	class RegexOrOperator : public RegexOperator
@@ -137,6 +150,11 @@ protected:
 		{
 			return RegexOperatorType::RegexOrOperatorType;
 		}
+
+		virtual unsigned int GetOperandNum()
+		{
+			return 2;
+		}
 	};
 
 	class RegexAndOperator : public RegexOperator
@@ -155,6 +173,11 @@ protected:
 		virtual RegexOperatorType GetType()
 		{
 			return RegexOperatorType::RegexAndOperatorType;
+		}
+
+		virtual unsigned int GetOperandNum()
+		{
+			return 2;
 		}
 	};
 
@@ -178,6 +201,11 @@ protected:
 		{
 			return RegexOperatorType::RegexLeftParenthesesType;
 		}
+
+		virtual unsigned int GetOperandNum()
+		{
+			return 0;
+		}
 	};
 
 	class RegexRightParentheseOperator : public RegexOperator
@@ -200,6 +228,12 @@ protected:
 		{
 			return RegexOperatorType::RegexRightParenthesesType;
 		}
+		
+		virtual unsigned int GetOperandNum()
+		{
+			return 0;
+		}
+
 	};
 
 	class RegexEndOperator : public RegexOperator
@@ -221,6 +255,11 @@ protected:
 		virtual RegexOperatorType GetType()
 		{
 			return RegexOperatorType::RegexEndType;
+		}
+
+		virtual unsigned int GetOperandNum()
+		{
+			return 0;
 		}
 	};
 

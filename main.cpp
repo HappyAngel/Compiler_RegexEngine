@@ -11,15 +11,15 @@ using namespace std;
 
 int main()
 {
-	//RegexExpressionUnitTest::RegexParserNFAUnitTest();	
-	//RegexExpressionUnitTest::RegexParserDFAUnitTest();
+	RegexExpressionUnitTest::RegexParserNFAUnitTest();	
+	RegexExpressionUnitTest::RegexParserDFAUnitTest();
 
-	RegexExpression regexExp301("P.?a");
-	vector<string> results = regexExp301.ExtractUsingDFA("Piass");
-	for (unsigned int i = 0; i < results.size(); i++)
-	{
-		cout << results[i] << endl;
-	}
+	//RegexExpression regexExp301("P.?a");
+	//vector<string> results = regexExp301.ExtractUsingDFA("Piass");
+	//for (unsigned int i = 0; i < results.size(); i++)
+	//{
+	//	cout << results[i] << endl;
+	//}
 
 	/*ifstream inputfile("test.txt");
 	string line;
